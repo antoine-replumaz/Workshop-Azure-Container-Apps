@@ -129,3 +129,5 @@ az containerapp create \
   --registry-username $ACR_NAME \
   --registry-password $REGISTRY_PASSWORD \
   --query configuration.ingress.fqdn
+
+az group delete -n "RG_Lab_3_pg" -o jsonc
