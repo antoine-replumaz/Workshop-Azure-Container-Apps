@@ -46,7 +46,15 @@ az group create \
 
     az acr repository show-tags --name $ACR_NAME --repository $APPLICATION  --orderby time_desc --output table
 
+    az containerapp ingress traffic show --name $APPLICATION --resource-group $RESOURCE_GROUP -o table
 
+    az containerapp ingress traffic set \
+    --name $APPLICATION \
+    --resource-group $RESOURCE_GROUP \
+    --revision-weight $APPLICATION--$REVISION_01=0 $APPLICATION--$REVISION_02=100
+    az containerapp ingress traffic show --name $APPLICATION --resource-group $RESOURCE_GROUP -o table
+
+    az group delete --name $RESOURCE_GROUP --yes
   // Rechercher des actions 
   // https://github.com/marketplace?type=&verification=&query=azure+container+apps+
   // A éviter (non achevée)
