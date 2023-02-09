@@ -1,0 +1,64 @@
+id: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG_Lab_8/providers/Microsoft.App/containerapps/nginx-container-app
+identity:
+  type: None
+location: West Europe
+name: nginx-container-app
+properties:
+  configuration:
+    activeRevisionsMode: Single
+    dapr: null
+    ingress:
+      allowInsecure: false
+      customDomains: null
+      exposedPort: 0
+      external: true
+      fqdn: nginx-container-app.blackplant-f22feacc.westeurope.azurecontainerapps.io
+      ipSecurityRestrictions: null
+      targetPort: 80
+      traffic:
+      - latestRevision: true
+        weight: 100
+      transport: Auto
+    maxInactiveRevisions: null
+    registries: null
+    secrets: null
+  customDomainVerificationId: 17729F9E5774249EFDEC53397B1C9297DD77874F826F2AA074666284138C5106
+  environmentId: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG_Lab_8/providers/Microsoft.App/managedEnvironments/Lab-8-env
+  eventStreamEndpoint: https://westeurope.azurecontainerapps.dev/subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG_Lab_8/containerApps/nginx-container-app/eventstream
+  latestRevisionFqdn: nginx-container-app--m7kmi4x.blackplant-f22feacc.westeurope.azurecontainerapps.io
+  latestRevisionName: nginx-container-app--m7kmi4x
+  managedEnvironmentId: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG_Lab_8/providers/Microsoft.App/managedEnvironments/Lab-8-env
+  outboundIpAddresses:
+  - 20.103.100.245
+  provisioningState: Succeeded
+  template:
+    volumes:
+      - name: azure-file-volume
+        storageName: acastoragemount
+        storageType: AzureFile
+    containers:
+    - image: nginx
+      name: nginx-container-app
+      volumeMounts:
+      - volumeName: azure-file-volume
+        mountPath: /var/log/nginx
+      resources:
+        cpu: 0.5
+        ephemeralStorage: 3Gi
+        memory: 1Gi
+    initContainers: null
+    revisionSuffix: ''
+    scale:
+      maxReplicas: 1
+      minReplicas: 1
+      rules: null
+  workloadProfileType: null
+resourceGroup: RG_Lab_8
+systemData:
+  createdAt: '2023-02-09T12:30:04.044705'
+  createdBy: antoine.replumaz@april.com
+  createdByType: User
+  lastModifiedAt: '2023-02-09T12:31:18.4717045'
+  lastModifiedBy: antoine.replumaz@april.com
+  lastModifiedByType: User
+type: Microsoft.App/containerApps
