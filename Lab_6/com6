@@ -9,6 +9,15 @@ az ad sp create-for-rbac --name "mySPN" --role "Contributor" --scopes /subscript
   "subscriptionId": "829eefa8-6f30-4e77-9e70-3be39b357f5e",
   "tenantId": "7c98f49f-ac31-43eb-888a-72a17520cdda"
 }
+{
+  "clientId": "5143f8d6-a81c-406d-834a-399328bbe594",
+  "clientSecret": "jzp8Q~VN4oBKrLwMZMVpfEBnazmiFWzPnKC2Cdxy",
+  "subscriptionId": "829eefa8-6f30-4e77-9e70-3be39b357f5e",
+  "tenantId": "7c98f49f-ac31-43eb-888a-72a17520cdda"
+}
+
+5143f8d6-a81c-406d-834a-399328bbe594
+25a13692-1869-466c-9f90-5ec14502e626
 
 RESOURCE_GROUP="RG-Lab6"
 LOCATION="eastus2"
