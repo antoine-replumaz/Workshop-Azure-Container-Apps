@@ -1,0 +1,58 @@
+az login --use-device-code
+az ad sp create-for-rbac --name "mySPN" --role "Contributor" --scopes /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e --sdk-aut -o jsonc
+// pas les droits
+- Service principles : Replumaz_SPN (ID : 2a267fa8-b2c7-491c-8068-45c65795cf84) secret : jzp8Q~VN4oBKrLwMZMVpfEBnazmiFWzPnKC2Cdxy
+
+{
+  "clientId": "2a267fa8-b2c7-491c-8068-45c65795cf84",
+  "clientSecret": "jzp8Q~VN4oBKrLwMZMVpfEBnazmiFWzPnKC2Cdxy",
+  "subscriptionId": "829eefa8-6f30-4e77-9e70-3be39b357f5e",
+  "tenantId": "7c98f49f-ac31-43eb-888a-72a17520cdda"
+}
+
+RESOURCE_GROUP="RG-Lab6"
+LOCATION="eastus2"
+ACR_NAME="acrlab6"
+LOG_ANALYTICS_NAME="antoine-workspace-lab-6"
+CONTAINERAPPS_ENVIRONMENT="environment-lab-6"
+APPLICATION="hello"
+az extension add --name containerapp --upgrade
+az provider register --namespace Microsoft.App
+az provider register --namespace Microsoft.OperationalInsights
+
+az group create \
+  --name ${RESOURCE_GROUP} \
+  --location ${LOCATION}
+
+az acr create \
+  --resource-group ${RESOURCE_GROUP} \
+  --name ${ACR_NAME} \
+  --sku Basic \
+  --admin-enabled true
+
+az monitor log-analytics workspace create \
+  --resource-group ${RESOURCE_GROUP} \
+  --workspace-name ${LOG_ANALYTICS_NAME} \
+  --location ${LOCATION}
+LOG_ANALYTICS_WORKSPACE_CLIENT_ID=`az monitor log-analytics workspace show --query customerId -g ${RESOURCE_GROUP} -n ${LOG_ANALYTICS_NAME} --out tsv`
+LOG_ANALYTICS_WORKSPACE_PRIMARY_KEY=`az monitor log-analytics workspace get-shared-keys --query primarySharedKey -g ${RESOURCE_GROUP} -n ${LOG_ANALYTICS_NAME} --out tsv`
+
+az containerapp env create \
+  --name ${CONTAINERAPPS_ENVIRONMENT} \
+  --resource-group ${RESOURCE_GROUP} \
+  --location ${LOCATION} \
+  --logs-workspace-id $LOG_ANALYTICS_WORKSPACE_CLIENT_ID \
+  --logs-workspace-key $LOG_ANALYTICS_WORKSPACE_PRIMARY_KEY
+
+  cd ./Lab_6/App
+az acr build -t ${ACR_NAME}.azurecr.io/${APPLICATION}:1.0.0 -r ${ACR_NAME} .
+az containerapp create \
+  --name ${APPLICATION} \
+  --resource-group ${RESOURCE_GROUP} \
+  --environment ${CONTAINERAPPS_ENVIRONMENT} \
+  --image ${ACR_NAME}.azurecr.io/${APPLICATION}:1.0.0 \
+  --target-port 3000 \
+  --ingress external \
+  --registry-server ${ACR_NAME}.azurecr.io \
+  --query configuration.ingress.fqdn
+
