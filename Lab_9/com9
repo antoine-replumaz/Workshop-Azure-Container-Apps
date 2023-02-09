@@ -1,0 +1,53 @@
+RESOURCE_GROUP="RG_Lab_9"
+LOCATION="westeurope"
+ACR_NAME="acrantoinelab9"
+ENVIRONMENT_NAME="Lab-9-env"
+APPLICATION="hello-aca"
+VERSION_1_APPLICATION=1.0.0
+REVISION_01=rev-01
+VERSION_2_APPLICATION=2.0.0
+REVISION_02=rev-02
+az group create \
+  --name $RESOURCE_GROUP \
+  --location $LOCATION
+  az group show --resource-group $RESOURCE_GROUP -o table
+  az acr create \
+  --resource-group $RESOURCE_GROUP \
+  --name $ACR_NAME \
+  --sku Basic \
+  --admin-enabled true
+  az acr show --name $ACR_NAME --resource-group $RESOURCE_GROUP -o table
+  az containerapp env create \
+  --name $ENVIRONMENT_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION \
+  --logs-destination none
+  az containerapp env list --resource-group $RESOURCE_GROUP -o jsonc
+  cd ./Lab_9/App
+  az acr build -t $ACR_NAME.azurecr.io/$APPLICATION:$VERSION_1_APPLICATION -r $ACR_NAME .
+  az acr repository list --name $ACR_NAME -o table
+  REGISTRY_PASSWORD=$(az acr credential show --name $ACR_NAME -o tsv --query "passwords[0].value")
+
+  az containerapp create \
+    --name $APPLICATION \
+    --resource-group $RESOURCE_GROUP \
+    --environment $ENVIRONMENT_NAME \
+    --image $ACR_NAME.azurecr.io/$APPLICATION:$VERSION_1_APPLICATION \
+    --revision-suffix $REVISION_01 \
+    --registry-server $ACR_NAME.azurecr.io \
+    --registry-username $ACR_NAME \
+    --registry-password $REGISTRY_PASSWORD \
+    --target-port 3000 \
+    --ingress 'external' \
+    --query properties.configuration.ingress.fqdn \
+    -o jsonc
+  
+    az acr build -t $ACR_NAME.azurecr.io/$APPLICATION:$VERSION_2_APPLICATION -r $ACR_NAME .
+
+    az acr repository show-tags --name $ACR_NAME --repository $APPLICATION  --orderby time_desc --output table
+
+
+  // Rechercher des actions 
+  // https://github.com/marketplace?type=&verification=&query=azure+container+apps+
+  // A éviter (non achevée)
+  // https://github.com/marketplace/actions/azure-container-apps-build-and-deploy
