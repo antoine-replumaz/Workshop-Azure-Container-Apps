@@ -65,3 +65,4 @@ az containerapp create \
   --registry-server ${ACR_NAME}.azurecr.io \
   --query configuration.ingress.fqdn
 
+az group delete -n "RG-Lab6" -o jsonc

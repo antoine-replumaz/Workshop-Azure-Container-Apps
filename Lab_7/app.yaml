@@ -1,0 +1,76 @@
+id: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG-Lab7/providers/Microsoft.App/containerapps/my-container-app
+identity:
+  type: None
+location: East US 2
+name: my-container-app
+properties:
+  configuration:
+    activeRevisionsMode: Single
+    dapr: null
+    ingress:
+      allowInsecure: false
+      customDomains: null
+      exposedPort: 0
+      external: true
+      fqdn: my-container-app.kindmeadow-b35b1ce7.eastus2.azurecontainerapps.io
+      ipSecurityRestrictions: null
+      targetPort: 9898
+      traffic:
+      - latestRevision: true
+        weight: 100
+      transport: Auto
+    maxInactiveRevisions: null
+    registries:
+    - identity: ''
+      passwordSecretRef: acrantoine7testazurecrio-acrantoine7test
+      server: acrantoine7test.azurecr.io
+      username: acrantoine7test
+    secrets:
+    - name: acrantoine7testazurecrio-acrantoine7test
+  customDomainVerificationId: 17729F9E5774249EFDEC53397B1C9297DD77874F826F2AA074666284138C5106
+  environmentId: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG-Lab7/providers/Microsoft.App/managedEnvironments/my-environment
+  eventStreamEndpoint: https://eastus2.azurecontainerapps.dev/subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG-Lab7/containerApps/my-container-app/eventstream
+  latestRevisionFqdn: my-container-app--z9bea04.kindmeadow-b35b1ce7.eastus2.azurecontainerapps.io
+  latestRevisionName: my-container-app--z9bea04
+  managedEnvironmentId: /subscriptions/829eefa8-6f30-4e77-9e70-3be39b357f5e/resourceGroups/RG-Lab7/providers/Microsoft.App/managedEnvironments/my-environment
+  outboundIpAddresses:
+  - 20.80.210.228
+  provisioningState: Succeeded
+  template:
+    containers:
+    - image: acrantoine7test.azurecr.io/podinfo:latest
+      name: my-container-app
+      probes:
+      - httpGet:
+          path: /healthz
+          port: 9898
+          scheme: HTTP
+        periodSeconds: 10
+        type: Liveness
+      - httpGet:
+          path: /readyz
+          port: 9898
+          scheme: HTTP
+        periodSeconds: 10
+        type: Readiness
+      resources:
+        cpu: 0.5
+        ephemeralStorage: 3Gi
+        memory: 1Gi
+    initContainers: null
+    revisionSuffix: ''
+    scale:
+      maxReplicas: 10
+      minReplicas: 3
+      rules: null
+    volumes: null
+  workloadProfileType: null
+resourceGroup: RG-Lab7
+systemData:
+  createdAt: '2023-02-09T10:29:40.0716813'
+  createdBy: antoine.replumaz@april.com
+  createdByType: User
+  lastModifiedAt: '2023-02-09T10:40:07.2555313'
+  lastModifiedBy: antoine.replumaz@april.com
+  lastModifiedByType: User
+type: Microsoft.App/containerApps
